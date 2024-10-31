@@ -21,21 +21,39 @@
                     {{ __('Appointment Booking') }}
                     </x-nav-link>
                 </div>
+                @role('admin')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('empleado.index')" :active="request()->routeIs('empleado.index')">
                     {{ __('Employee') }}
                     </x-nav-link>
                 </div>
+                @endrole
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('citasagendadas.index')" :active="request()->routeIs('citasagendadas.index')">
                     {{ __('Appointment Setter') }}
                     </x-nav-link>
                 </div>
+                @role('admin')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('listaempleado.index')" :active="request()->routeIs('listaempleado.index')">
                     {{ __('Employee List') }}
                     </x-nav-link>
                 </div>
+                @endrole
+                @role('admin')
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('listaroles.index')" :active="request()->routeIs('listaroles.index')">
+                    {{ __('List Of Roles') }}
+                    </x-nav-link>
+                </div>
+                @endrole
+                @role('admin')
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('permisos.index')" :active="request()->routeIs('permisos.index')">
+                    {{ __('List Of Permissions') }}
+                    </x-nav-link>
+                </div>
+                @endrole
             </div>
 
             <!-- Settings Dropdown -->

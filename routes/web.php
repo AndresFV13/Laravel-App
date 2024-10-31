@@ -47,6 +47,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/editempleado/{id}',[EmpleadoController::class,'mostrarEdit'])->name('editempleado.index');
     Route::put('/updatempleado/{id}',[EmpleadoController::class,'update'])->name('updatempleado.update');
     Route::get('/deletempleado/{id}', [EmpleadoController::class,'destroy'])->name('deletempleado.destroy');
+    //Roles
+    Route::get('/roles', function(){
+        return view('listaroles.index');
+    })->name('listaroles.index');
+    //Permisos
+    Route::get('/permisos', function(){
+        return view('permisos.index');
+    })->name('permisos.index');
 });
 
 require __DIR__.'/auth.php';
