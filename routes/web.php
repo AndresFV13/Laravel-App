@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\RoleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -51,7 +52,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/roles', function(){
         return view('listaroles.index');
     })->name('listaroles.index');
-    //Permisos
+    // Mostrar la lista de roles
+    Route::get('/roles', [RoleController::class, 'index'])->name('listaroles.index');
+
+    // Crear un nuevo rol
+    Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+
+    // Editar un rol existente
+    Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+
+    // Actualizar un rol existente
+    Route::put('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
+
+    // Eliminar un rol
+    Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
     Route::get('/permisos', function(){
         return view('permisos.index');
     })->name('permisos.index');
