@@ -3,26 +3,21 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use App\Models\User;
 
 return new class extends Migration
 {
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        $role1 = Role::create (['name' => 'admin']);
-        $role2 = Role::create (['name' => 'usuario']);
-        $user = User::find(1);
-        $user->assignRole($role1);
-        
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('roles')) {
+            Schema::create('roles', function (Blueprint $table) {
+                $table->id();
+                $table->string('name')->unique(); // Asegúrate de que el nombre del rol sea único.
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -33,3 +28,4 @@ return new class extends Migration
         Schema::dropIfExists('roles');
     }
 };
+

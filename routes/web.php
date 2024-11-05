@@ -57,15 +57,17 @@ Route::middleware('auth')->group(function () {
 
     // Crear un nuevo rol
     Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+    // Ruta para mostrar el formulario de edición
+    Route::get('usuarios/{user}/roles/edit', [RoleController::class, 'editUserRoles'])->name('usuarios.roles.edit');
 
-    // Editar un rol existente
-    Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
-
-    // Actualizar un rol existente
-    Route::put('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
+    // Ruta para actualizar los roles
+    Route::put('usuarios/{user}/roles', [RoleController::class, 'updateUserRoles'])->name('usuarios.roles.update');
 
     // Eliminar un rol
     Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
+
+    Route::get('/roles', [RoleController::class, 'listarUsuariosConRoles'])->name('listaroles.index');
+
     Route::get('/permisos', function(){
         return view('permisos.index');
     })->name('permisos.index');

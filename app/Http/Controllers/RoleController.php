@@ -6,6 +6,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class RoleController extends Controller
 {
@@ -34,30 +35,41 @@ class RoleController extends Controller
         return redirect()->route('listaroles.index')->with('success', 'Rol creado correctamente');
     }
 
-    public function edit(Role $role)
+    public function editUserRoles(User $user)
     {
-        $permissions = Permission::all();
-        return view('roles.edit', compact('role', 'permissions'));
+        // Obtén todos los roles disponibles
+        $roles = Role::all();
+        
+        // Obtén los roles asignados al usuario
+        $userRoles = $user->roles->pluck('id')->toArray();
+    
+        return view('editUserRoles.index', compact('user', 'roles', 'userRoles'));
     }
-
-    public function update(Request $request, Role $role)
+    
+    public function updateUserRoles(Request $request, User $user)
     {
+        // Valida la solicitud
         $request->validate([
-            'name' => 'required|unique:roles,name,' . $role->id,
-            'permissions' => 'array'
+            'roles' => 'array', // Acepta múltiples roles
+            'roles.*' => 'exists:roles,id', // Asegúrate de que los IDs de roles existan
         ]);
-
-        $role->name = $request->name;
-        $role->save();
-        $role->syncPermissions($request->permissions);
-
-        return redirect()->route('listaroles.index')->with('success', 'Rol actualizado correctamente');
+    
+        // Sincroniza los roles asignados al usuario
+        $user->syncRoles($request->roles);
+    
+        return redirect()->route('listaroles.index')->with('success', 'Roles actualizados correctamente');
     }
 
     public function destroy(Role $role)
     {
         $role->delete();
         return redirect()->route('listaroles.index')->with('success', 'Rol eliminado correctamente');
+    }
+
+    public function listarUsuariosConRoles()
+    {
+        $usuarios = \App\Models\User::with('roles')->get();
+        return view('listaroles.index', compact('usuarios'));
     }
 }
 

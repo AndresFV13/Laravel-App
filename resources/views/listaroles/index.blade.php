@@ -44,39 +44,32 @@
             </div>
 
             <!-- Tabla de roles -->
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <h2 class="mt-2 text-xl text-center text-gray-800 font-semibold">Listado de Roles</h2>
-                <div class="col-12">
-                    <table id="example" class="table table-striped" style="width:100%">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Roles</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($roles as $role)
-                                <tr>
-                                    <td>{{ $role->id }}</td>
-                                    <td>{{ $role->name }}</td>
-                                    <td>
-                                        <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-success">
-                                            <i class="bi bi-pencil"></i> Editar
-                                        </a>
-                                        <form action="{{ route('roles.destroy', $role->id) }}" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar este rol?')">
-                                                <i class="bi bi-trash"></i> Eliminar
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+            <div class="container">
+                <h1>Lista de Usuarios y Roles</h1>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($usuarios as $usuario)
+                        <tr>
+                            <td>{{ $usuario->name }}</td>
+                            <td>
+                                @foreach($usuario->roles as $role)
+                                    {{ $role->name }}@if (!$loop->last), @endif
+                                @endforeach
+                            </td>
+                            <td>
+                                <a href="{{ route('usuarios.roles.edit', $usuario) }}" class="btn btn-primary">Editar</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </form>
     </div>
