@@ -53,10 +53,13 @@ class RoleController extends Controller
             'roles' => 'array', // Acepta múltiples roles
             'roles.*' => 'exists:roles,id', // Asegúrate de que los IDs de roles existan
         ]);
-    
-        // Sincroniza los roles asignados al usuario
-        $user->syncRoles($request->roles);
-    
+
+        // Obtiene los nombres de los roles a partir de sus IDs
+        $roleNames = Role::whereIn('id', $request->roles)->pluck('name')->toArray();
+
+        // Sincroniza los roles asignados al usuario usando los nombres
+        $user->syncRoles($roleNames);
+
         return redirect()->route('listaroles.index')->with('success', 'Roles actualizados correctamente');
     }
 

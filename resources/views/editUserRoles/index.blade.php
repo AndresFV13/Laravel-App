@@ -22,7 +22,6 @@
         <form action="{{ route('usuarios.roles.update', $user) }}" method="POST">
             @csrf
             @method('PUT')
-
             @foreach($roles as $role)
                 <div>
                     <input type="checkbox" name="roles[]" id="role-{{ $role->id }}" value="{{ $role->id }}" 

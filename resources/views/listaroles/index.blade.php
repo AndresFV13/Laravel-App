@@ -64,7 +64,7 @@
                                 @endforeach
                             </td>
                             <td>
-                                <a href="{{ route('usuarios.roles.edit', $usuario) }}" class="btn btn-primary">Editar</a>
+                                <a href="{{ route('usuarios.roles.edit', $usuario->id) }}" class="btn btn-primary">Editar Roles</a>
                             </td>
                         </tr>
                     @endforeach
