@@ -1,3 +1,4 @@
+@role('admin')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
@@ -24,7 +25,7 @@
             @method('PUT')
             @foreach($roles as $role)
                 <div>
-                    <input type="checkbox" name="roles[]" id="role-{{ $role->id }}" value="{{ $role->id }}" 
+                    <input type="radio" name="roles[]" id="role-{{ $role->id }}" value="{{ $role->id }}" 
                         {{ in_array($role->id, $userRoles) ? 'checked' : '' }}>
                     <label for="role-{{ $role->id }}">{{ $role->name }}</label>
                 </div>
@@ -56,3 +57,8 @@
         });
     });
     </script>
+@else
+    <div class="alert alert-danger">
+        <strong>Acceso denegado:</strong> No tienes permiso para acceder a esta sección.
+    </div>
+@endif

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -55,23 +56,26 @@ Route::middleware('auth')->group(function () {
     // Mostrar la lista de roles
     Route::get('/roles', [RoleController::class, 'index'])->name('listaroles.index');
 
-    // Crear un nuevo rol
-    Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+    // Crear un nuevo rols
+    Route::post('/permisos', [RoleController::class, 'store'])->name('roles.store');
     // Ruta para mostrar el formulario de edición
-Route::get('usuarios/{user}/roles/edit', [RoleController::class, 'editUserRoles'])->name('usuarios.roles.edit');
+    Route::get('usuarios/{user}/roles/edit', [RoleController::class, 'editUserRoles'])->name('usuarios.roles.edit');
 
-// Ruta para actualizar los roles
-Route::put('usuarios/{user}/roles', [RoleController::class, 'updateUserRoles'])->name('usuarios.roles.update');
+    // Ruta para actualizar los roles
+    Route::put('usuarios/{user}/roles', [RoleController::class, 'updateUserRoles'])->name('usuarios.roles.update');
 
-
-    // Eliminar un rol
-    Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
+    //Eliminar usuario
+    Route::delete('/usuarios/{user}', [UserController::class, 'destroy'])->name('usuarios.destroy');
 
     Route::get('/roles', [RoleController::class, 'listarUsuariosConRoles'])->name('listaroles.index');
-
+    
     Route::get('/permisos', function(){
         return view('permisos.index');
     })->name('permisos.index');
+    
+    Route::get('/permisos', [RoleController::class, 'mostrarRoles'])->name('permisos.index');
+
+    Route::delete('/permisos/{id}', [RoleController::class, 'eliminarRol'])->name('permisos.eliminarRol');
 });
 
 require __DIR__.'/auth.php';

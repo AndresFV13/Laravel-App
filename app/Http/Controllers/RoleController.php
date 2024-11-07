@@ -63,16 +63,30 @@ class RoleController extends Controller
         return redirect()->route('listaroles.index')->with('success', 'Roles actualizados correctamente');
     }
 
-    public function destroy(Role $role)
+    public function destroy(User $user)
     {
-        $role->delete();
-        return redirect()->route('listaroles.index')->with('success', 'Rol eliminado correctamente');
+        $user->delete();
+
+        return redirect()->route('listaroles.index')->with('success', 'Usuario eliminado correctamente');
     }
 
     public function listarUsuariosConRoles()
     {
         $usuarios = \App\Models\User::with('roles')->get();
         return view('listaroles.index', compact('usuarios'));
+    }
+
+    public function mostrarRoles()
+    {
+        $roles = Role::all();
+        return view('permisos.index', compact('roles'));
+    }
+
+    public function eliminarRol($id)
+    {
+        $role = Role::findOrFail($id);
+        $role->delete();
+        return to_route('permisos.index');
     }
 }
 

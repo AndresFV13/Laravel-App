@@ -1,3 +1,4 @@
+@role('admin')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
@@ -16,33 +17,6 @@
         <form action="{{ route('roles.store') }}" method="POST" class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             @csrf
 
-            <!-- Botón modal para crear rol -->
-            <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createRoleModal">
-                Crear Rol
-            </button>
-
-            <!-- Modal para crear un nuevo rol -->
-            <div class="modal fade" id="createRoleModal" tabindex="-1" aria-labelledby="createRoleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="createRoleModalLabel">Crear Nuevo Rol</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="roleName" class="form-label">Nombre del Rol</label>
-                                <input type="text" name="name" id="roleName" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Tabla de roles -->
             <div class="container">
                 <h1>Lista de Usuarios y Roles</h1>
@@ -52,27 +26,36 @@
                             <th>Nombre</th>
                             <th>Rol</th>
                             <th>Acciones</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($usuarios as $usuario)
-                        <tr>
-                            <td>{{ $usuario->name }}</td>
-                            <td>
-                                @foreach($usuario->roles as $role)
-                                    {{ $role->name }}@if (!$loop->last), @endif
-                                @endforeach
-                            </td>
-                            <td>
-                                <a href="{{ route('usuarios.roles.edit', $usuario->id) }}" class="btn btn-primary">Editar Roles</a>
-                            </td>
-                        </tr>
-                    @endforeach
+                        @foreach($usuarios as $usuario)
+                            <tr>
+                                <td>{{ $usuario->name }}</td>
+                                <td>
+                                    @foreach($usuario->roles as $role)
+                                        {{ $role->name }}@if (!$loop->last), @endif
+                                    @endforeach
+                                </td>
+                                <td>
+                                    <a href="{{ route('usuarios.roles.edit', $usuario->id) }}" class="btn btn-primary">Editar Roles</a>
+                                </td>
+                                <td>
+                                    <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Eliminar Usuario</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </form>
     </div>
+
 </x-app-layout>
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -110,3 +93,8 @@
         });
     });
     </script>
+@else
+    <div class="alert alert-danger">
+        <strong>Acceso denegado:</strong> No tienes permiso para acceder a esta sección.
+    </div>
+@endif
